@@ -12,14 +12,15 @@ def render_uploader():
     )
     
     if uploaded_files and st.sidebar.button("Upload DB"):
-        try:
-            # Reset file pointers before reading
-            files = [(f.name, f.getvalue()) for f in uploaded_files]
-            response = upload_pdfs_api(uploaded_files)
-            
-            if response.status_code == 200:
-                st.sidebar.success("Uploaded successfully")
-            else:
-                st.sidebar.error(f"Error: {response.text}")
-        except Exception as e:
-            st.sidebar.error(f"Connection failed: {str(e)}")
+        with st.spinner('Processing your documents...'):
+            try:
+                # Reset file pointers before reading
+                files = [(f.name, f.getvalue()) for f in uploaded_files]
+                response = upload_pdfs_api(uploaded_files)
+                
+                if response.status_code == 200:
+                    st.sidebar.success("Uploaded successfully")
+                else:
+                    st.sidebar.error(f"Error: {response.text}")
+            except Exception as e:
+                st.sidebar.error(f"Connection failed: {str(e)}")
